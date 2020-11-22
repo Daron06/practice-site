@@ -1,0 +1,38 @@
+.admin__lesson {
+  display: flex;
+  padding: 20px;
+  &__nav {
+    margin-right: 100px;
+    background-color: rgb(154, 236, 250);
+    padding: 20px;
+    border-radius: 10px;
+    &__item {
+      &--first {
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+        padding-bottom: 20px;
+      }
+    }
+    & li {
+      list-style-type: none;
+      margin-bottom: 20px;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+  }
+  &__content {
+    width: 1000px;
+  }
+  &__textField {
+    margin: 20px 10px;
+  }
+
+  &__field {
+    padding: 20px;
+    background-color: rgb(240, 227, 227);
+    border-radius: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+}

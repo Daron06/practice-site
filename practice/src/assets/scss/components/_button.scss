@@ -1,0 +1,56 @@
+.button {
+  &--send {
+    button {
+      border-radius: 53px;
+      padding: 17px 30px;
+
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px;
+
+      &:hover {
+        box-shadow: none;
+      }
+    }
+    .MuiButton-contained {
+      background-color: #edfaf7;
+      box-shadow: none;
+
+      &:hover,
+      &:active {
+        box-shadow: none !important;
+        background-color: darken(#edfaf7, 5%);
+      }
+    }
+    .MuiButton-label {
+      color: #1ba089;
+      text-transform: none;
+    }
+  }
+  &--cancel {
+    button {
+      border-radius: 53px;
+      padding: 17px 30px;
+
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px;
+    }
+    .MuiButton-contained {
+      background-color: #fef3e9;
+      box-shadow: none;
+
+      &:hover,
+      &:active {
+        background-color: darken(#fef3e9, 5%);
+        box-shadow: none !important;
+      }
+    }
+    .MuiButton-label {
+      text-transform: none;
+      color: #f98f2e;
+    }
+  }
+}

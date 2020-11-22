@@ -1,0 +1,241 @@
+@import '../../pages/pages';
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+:focus {
+  outline: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+pre {
+  font-family: inherit;
+}
+.app {
+  display: flex;
+}
+.scrollbar {
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(218, 71, 96, 0.1);
+    border-radius: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background-color: #f5889a;
+  }
+}
+.admin {
+  &__nav {
+    display: flex;
+    justify-content: center;
+
+    background-color: rgb(247, 164, 247);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &__users {
+    display: flex;
+
+    &__transfer {
+      padding-top: 20px;
+      width: 700px;
+    }
+
+    &__auth {
+      margin: 20px;
+    }
+    &__accepted {
+      text-align: right;
+      margin: 20px;
+
+      .MuiChip-outlinedSecondary {
+        flex-direction: row-reverse;
+      }
+
+      .MuiChip-root .MuiChip-avatar {
+        margin-right: 5px;
+        margin-left: -6px;
+      }
+      .MuiIconButton-label > .MuiSvgIcon-root {
+        transform: rotate(-180deg);
+      }
+
+      .admin__users__list__item {
+        flex-direction: row-reverse;
+      }
+    }
+    &__list {
+      max-height: 700px;
+      width: 400px;
+      overflow: auto;
+
+      padding: 20px;
+      border-radius: 20px;
+      background-color: rgb(226, 238, 241);
+      &__accepted {
+        max-height: 700px;
+        width: 400px;
+        overflow: auto;
+
+        padding: 20px;
+        border-radius: 20px;
+        background-color: rgb(250, 182, 127);
+      }
+      &__item {
+        padding-bottom: 10px;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    &__chip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+  }
+
+  .MuiButton-label {
+    text-transform: none;
+  }
+
+  &__completed {
+    background-color: rgb(224, 250, 224);
+  }
+  &__pending {
+    background-color: rgb(247, 237, 148);
+  }
+  &__rejected {
+    background-color: rgb(248, 168, 163);
+  }
+
+  &__message {
+    &__user {
+      display: flex;
+      justify-content: space-between;
+      &--info {
+        display: flex;
+      }
+    }
+    &__title {
+      padding-left: 13px;
+      padding-right: 45px;
+    }
+
+    &__name {
+      display: block;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    &__info {
+      word-break: break-word;
+
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      color: #828694;
+    }
+
+    &__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+    }
+    &__item {
+      padding-top: 25px;
+      padding-bottom: 25px;
+      padding-left: 20px;
+      padding-right: 20px;
+
+      border-bottom: 1px solid #f5f5f5;
+      margin-bottom: 20px;
+      background-color: rgb(250, 243, 243);
+
+      word-break: break-word;
+
+      &-text {
+        padding-left: 54px;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+      }
+    }
+    &__chat {
+      position: sticky;
+      bottom: 0;
+      background-color: #fff;
+    }
+    &__chat-field {
+      padding: 10px;
+      background-color: rgb(192, 185, 185);
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+
+    &__button {
+      margin-bottom: 20px;
+    }
+  }
+}
+.admin__task__block {
+  padding: 50px 30px;
+  position: sticky;
+  bottom: 0;
+}
+
+.item-wrapper {
+  background-color: #fff;
+  display: inline-table;
+  border-radius: 10px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.03);
+}
+.admin {
+  &__modal {
+    padding: 33px 36px;
+    width: 510px;
+    height: 363px;
+
+    &-button {
+      display: flex;
+      float: right;
+
+      > div {
+        padding-left: 13px;
+      }
+    }
+    &-field {
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+  }
+}

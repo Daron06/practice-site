@@ -1,0 +1,25 @@
+.videos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-bottom: 40px;
+  &-wrapper {
+    width: 570px;
+    margin-top: 54px;
+  }
+
+  &__item {
+    padding: 33px;
+    height: 410px;
+
+    & > h2 {
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 700;
+
+      padding-bottom: 23px;
+
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.resources-item {
+  width: 640px;
+  padding-top: 53px;
+  margin: 0 auto;
+
+  &__wrapper {
+    width: 640px;
+    padding: 50px;
+    margin: 0 auto;
+
+    & h1 {
+      font-size: 42px;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    & p {
+      padding-bottom: 16px;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+    }
+  }
+}

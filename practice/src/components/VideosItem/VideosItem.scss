@@ -1,0 +1,35 @@
+.videos-item {
+  margin: 0 auto;
+  width: 820px;
+  padding-top: 54px;
+  padding-bottom: 20px;
+
+  p {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  &__modal {
+    padding: 33px 36px;
+    width: 510px;
+    height: 363px;
+
+    &-button {
+      display: flex;
+      float: right;
+
+      > div {
+        padding-left: 13px;
+      }
+    }
+    &-field {
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+  }
+  &-wrapper {
+    padding: 51px;
+  }
+}

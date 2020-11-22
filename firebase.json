@@ -1,0 +1,15 @@
+{
+  "hosting": [
+    {
+      "target": "admin",
+      "public": "admin/build"
+    },
+    {
+      "target": "practice",
+      "public": "practice/build"
+    }
+  ],
+  "firestore": {
+    "indexes": "firestore.indexes.json"
+  }
+}

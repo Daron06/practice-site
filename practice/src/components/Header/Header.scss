@@ -1,0 +1,95 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 85px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  padding-left: 36px;
+  position: sticky;
+  top: 0;
+  z-index: 500;
+
+  background-color: #fff;
+  &__title {
+    display: flex;
+    align-items: center;
+    &-button {
+      padding-right: 21px;
+      .MuiIconButton-root {
+        background: #edfaf7;
+      }
+      .MuiIconButton-label {
+        width: 24px;
+      }
+      .MuiSvgIcon-root {
+        margin-left: 5px;
+        fill: #07a287;
+      }
+    }
+    &-item {
+      font-size: 26px;
+      font-style: normal;
+      font-weight: 700;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+
+    &__title {
+      padding-left: 13px;
+      padding-right: 45px;
+    }
+
+    &__name {
+      display: block;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    &__info {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      color: #828694;
+    }
+  }
+
+  &__avatar {
+    position: relative;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+    }
+
+    .MuiCircularProgress-root {
+      position: absolute;
+      right: -6px;
+      top: -6px;
+    }
+  }
+
+  &__exit {
+    margin-right: 67px;
+
+    &-icon {
+      color: #adadad;
+    }
+  }
+}
+.circle {
+  position: relative;
+  padding-right: '10p';
+
+  &--primal {
+    color: green;
+    z-index: 2;
+  }
+
+  &--secondary {
+    opacity: 0.2;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "daron-b15b1"
+  },
+  "targets": {
+    "daron-b15b1": {
+      "hosting": {
+        "admin": [
+          "daronadmin"
+        ],
+        "practice": [
+          "daron-b15b1"
+        ]
+      }
+    }
+  }
+}
