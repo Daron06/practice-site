@@ -1,22 +1,16 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-// import { firebase } from './firebase';
 import AdminResources from './pages/Resources';
 import AdminLesson from './pages/Lesson';
 import AdminActivities from './pages/Activities';
 import Nav from './components/Nav';
 import TransferUsers from './components/TransferUsers';
 import TasksPending from './components/TasksPending';
+import NewMessages from './components/NewMessages';
 
+export const ADMIN_ID: string = '12086860';
+export const ADMIN_AVATAR: string = 'https://avatars3.githubusercontent.com/u/12086860?v=4';
 export default function App() {
-  // React.useEffect(() => {
-  //   firebase.auth().onAuthStateChanged(function (profile) {
-  //     if(profile) {
-  //       console.log(profile)
-  //     }
-  //   })
-  // },[])
-
   return (
     <div className="App">
       <Nav />
@@ -31,7 +25,10 @@ export default function App() {
       </Route>
       <Route exact path="/">
         <TransferUsers />
-        <TasksPending />
+        <div className="admin__table__content">
+          <TasksPending />
+          <NewMessages />
+        </div>
       </Route>
     </div>
   );

@@ -1,11 +1,9 @@
 import React from 'react';
 import { usersRef, tasksRef, messagesRef } from '../../firebase';
-
-import { format } from 'date-fns';
-import ReactMarkdown from 'react-markdown';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { Avatar, Button, Icon, InputBase } from '@material-ui/core';
 import TaskItem from '../../components/TaskItem';
+import TaskMessages from '../../components/TaskMessages';
+import { ADMIN_AVATAR, ADMIN_ID } from '../../App';
 
 export interface TaskItemProps {
   status: 'completed' | 'rejected' | 'pending';
@@ -16,6 +14,7 @@ export interface TaskItemProps {
   newTask: boolean;
   description?: string;
 }
+
 const AdminActivities = () => {
   const [acceptedUsers, setAcceptedUsers] = React.useState<any>([]);
   const [userTasks, setUserTasks] = React.useState<any[]>([]);
@@ -52,25 +51,33 @@ const AdminActivities = () => {
       });
   };
   const onAddMessage = () => {
-    console.log(currentTaskInfo);
-    messagesRef.add({
-      name: 'Царевич',
-      text: value,
-      profilePicUrl: 'https://avatars3.githubusercontent.com/u/12086860?v=4',
-      createdAt: new Date(),
-      newMessage: true,
-      uid: '12086860',
-      taskId: currentTaskInfo.taskId,
-    });
+    console.log(value);
+    console.log(!!value);
+    console.log(value.length);
+    console.log(!!value.length);
+    if (!!value) {
+      console.log(currentTaskInfo);
+      messagesRef.add({
+        name: 'Царевич',
+        text: value,
+        profilePicUrl: ADMIN_AVATAR,
+        createdAt: new Date(),
+        newMessage: true,
+        uid: ADMIN_ID,
+        taskId: currentTaskInfo.taskId,
+      });
+    }
     setValue('');
-  };
-
-  const onDeleteMessage = (id: any) => {
-    messagesRef.doc(id).delete();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+  };
+
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (!event.shiftKey && event.key === 'Enter') {
+      onAddMessage();
+    }
   };
 
   return (
@@ -118,36 +125,7 @@ const AdminActivities = () => {
             {userMessages.length &&
               userMessages.map((message) => {
                 return (
-                  <div key={message.messageId} className="admin__message__item">
-                    <div className="admin__message__user">
-                      <div className="admin__message__user--info">
-                        <Avatar
-                          className="admin__message__avatar"
-                          alt="user avatar"
-                          src={message.profilePicUrl || undefined}
-                        />
-                        <div className="admin__message__title">
-                          <span className="admin__message__name">{message.name}</span>
-                          <span className="admin__message__info">
-                            Отправлено{' '}
-                            {format(message.createdAt.toDate(), 'dd.MM.yyyy, в HH.mm.ss')}
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <Button
-                          color="secondary"
-                          onClick={() => onDeleteMessage(message.messageId)}
-                          startIcon={<DeleteIcon />}
-                        >
-                          DELETE
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="admin__message__item-text">
-                      <ReactMarkdown source={message.text} />
-                    </div>
-                  </div>
+                  <TaskMessages key={message.messageId} newMessage={false} message={message} />
                 );
               })}
 
@@ -160,6 +138,7 @@ const AdminActivities = () => {
                     rowsMax={10}
                     value={value}
                     onChange={handleChange}
+                    onKeyUp={handleKeyUp}
                     fullWidth
                     inputProps={{ 'aria-label': 'naked' }}
                     multiline

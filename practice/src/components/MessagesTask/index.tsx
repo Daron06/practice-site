@@ -83,7 +83,7 @@ const MessagesTask: React.FC<MessagesTaskProps> = ({ userId }): React.ReactEleme
   };
 
   const onAddMessage = () => {
-    if (value) {
+    if (!!value) {
       messagesRef.add({
         name:
           firebase.auth().currentUser?.displayName ||
