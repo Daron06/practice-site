@@ -9,20 +9,17 @@ import { selectUsersItems } from '../redux/users/selectors';
 import { IUser } from '../redux/users/types';
 
 const TransferUsers = () => {
-  const users = useSelector(selectUsersItems);
-  const [usersNotPaid, setUsersNotPaid] = React.useState<IUser[]>(
-    users.filter((el) => el.accepted === false)
-  );
-  const [usersPaid, setUsersPaid] = React.useState<IUser[]>(
-    users.filter((el) => el.accepted === true)
-  );
+  const [usersNotPaid, setUsersNotPaid] = React.useState<IUser[]>([]);
+  const [usersPaid, setUsersPaid] = React.useState<IUser[]>([]);
 
+  const users = useSelector(selectUsersItems);
   React.useEffect(() => {
-    // setUsersNotPaid(users.filter((el) => el.accepted === false));
-    // setUsersPaid(users.filter((el) => el.accepted === true));
+    setUsersNotPaid(users.filter((el) => el.accepted === false));
+    setUsersPaid(users.filter((el) => el.accepted === true));
     // usersRef.onSnapshot((querySnapshot) => {
     //   const user: any[] = [];
     //   const acceptedUser: any[] = [];
+
     //   querySnapshot.forEach((doc) => {
     //     if (doc.data().accepted) {
     //       acceptedUser.push(doc.data());
@@ -36,7 +33,7 @@ const TransferUsers = () => {
     // });
   }, [users]);
 
-  const transferUsers = (item: IUser) => {
+  const transferUsers = (item) => {
     if (item.accepted) {
       usersRef.doc(item.uid).update({
         accepted: false,
