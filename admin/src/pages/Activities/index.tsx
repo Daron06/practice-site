@@ -4,6 +4,8 @@ import { Avatar, Button, Icon, InputBase } from '@material-ui/core';
 import TaskItem from '../../components/TaskItem';
 import TaskMessages from '../../components/TaskMessages';
 import { ADMIN_AVATAR, ADMIN_ID } from '../../App';
+import { selectUsersItems } from '../../redux/users/selectors';
+import { useSelector } from 'react-redux';
 
 export interface TaskItemProps {
   status: 'completed' | 'rejected' | 'pending';
@@ -16,22 +18,27 @@ export interface TaskItemProps {
 }
 
 const AdminActivities = () => {
-  const [acceptedUsers, setAcceptedUsers] = React.useState<any>([]);
+  // const [acceptedUsers, setAcceptedUsers] = React.useState<any>([]);
   const [userTasks, setUserTasks] = React.useState<any[]>([]);
   const [userMessages, setUserMessages] = React.useState<any[]>([]);
   const [currentTaskInfo, setCurrentTaskInfo] = React.useState<any>();
   const [value, setValue] = React.useState<any>('');
+  const users = useSelector(selectUsersItems);
 
-  React.useEffect(() => {
-    usersRef.where('accepted', '==', true).onSnapshot(function (querySnapshot: any) {
-      const user: any[] = [];
+  // React.useEffect(() => {
+    
+  //   usersRef.where('accepted', '==', true).onSnapshot(function (querySnapshot: any) {
+  //     const user: any[] = [];
 
-      querySnapshot.forEach(function (doc: any) {
-        user.push(doc.data());
-      });
-      setAcceptedUsers(user);
-    });
-  }, []);
+  //     querySnapshot.forEach(function (doc: any) {
+  //       user.push(doc.data());
+  //       console.log(doc.data())
+  //     });
+
+  //     console.log(user);
+  //     setAcceptedUsers(user);
+  //   });
+  // }, []);
 
   const onGetUserTasks = (id: any) => {
     setUserMessages([]);
@@ -81,7 +88,7 @@ const AdminActivities = () => {
     <div>
       <div className="admin__table">
         <div className="admin__table__header">
-          {acceptedUsers.map((user: any) => {
+          {users.filter(user => user.accepted).map((user: any) => {
             return (
               <div className="admin__table__header--item" key={user.uid || 0}>
                 <Button
@@ -98,7 +105,7 @@ const AdminActivities = () => {
         </div>
         <div className="admin__table__content">
           <div className="admin__table__content--tasks scrollbar">
-            {userTasks.length &&
+            {!!userTasks.length &&
               userTasks.map((task: any) => {
                 return (
                   <TaskItem
@@ -119,7 +126,7 @@ const AdminActivities = () => {
               </div>
             )}
 
-            {userMessages.length &&
+            {!!userMessages.length &&
               userMessages.map((message) => {
                 return (
                   <TaskMessages key={message.messageId} newMessage={false} message={message} />

@@ -33,6 +33,7 @@ export default function App() {
           responseAt: doc.data()?.responseAt,
           newTask: doc.data().newTask,
           description: doc.data()?.description,
+          reference: doc.data()?.reference,
         });
       });
       dispatch(setTasks(items));

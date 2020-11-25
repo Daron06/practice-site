@@ -12,6 +12,7 @@ export interface ITask {
   responseAt?: Date;
   newTask: boolean;
   description?: string;
+  reference?: string;
 }
 
 

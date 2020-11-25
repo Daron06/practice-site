@@ -8,6 +8,8 @@ import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
 import { selectTasksById } from '../../redux/activities/selectors';
 import { Task } from '../../redux/activities/actions';
+import highlight from 'highlight.js';
+import 'highlight.js/styles/solarized-light.css';
 
 interface MessagesTaskProps {
   userId: string | undefined;
@@ -78,12 +80,18 @@ const MessagesTask: React.FC<MessagesTaskProps> = ({ userId }): React.ReactEleme
       });
   }, [id, taskData]);
 
+  React.useEffect(() => {
+    document.querySelectorAll('code').forEach((block) => {
+      highlight.highlightBlock(block as any);
+    });
+  }, [messagesTask]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
   const onAddMessage = () => {
-    if (!!value) {
+    if (value.trim()) {
       messagesRef.add({
         name:
           firebase.auth().currentUser?.displayName ||
@@ -96,13 +104,13 @@ const MessagesTask: React.FC<MessagesTaskProps> = ({ userId }): React.ReactEleme
         newMessage: true,
         taskId: id,
       });
+      setValue('');
     }
-
-    setValue('');
   };
 
-  const handleKeyUp = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (!event.shiftKey && event.key === 'Enter') {
+      event.preventDefault();
       onAddMessage();
     }
   };
@@ -121,14 +129,14 @@ const MessagesTask: React.FC<MessagesTaskProps> = ({ userId }): React.ReactEleme
             />
           )}
           <div className="messages-task__description">
-            {task && (
-              <p>
-                Ссылка на github: <span>{task.reference}</span>
+            {task && task.reference && (
+              <p className="messages-task__description-link">
+                <b>Ссылка на pull-реквест:</b> <a href={task.reference} target="_blank">{task.reference}</a>
               </p>
             )}
             <div>
-              <p>Комментарий автора:</p>
-              <div>
+              <p><b>Комментарий автора:</b></p>
+              <div className="messages-task__description-text">
                 {(task && <span className="">{task.decision}</span>) || (
                   <span>Без комментариев</span>
                 )}
@@ -172,14 +180,15 @@ const MessagesTask: React.FC<MessagesTaskProps> = ({ userId }): React.ReactEleme
                 inputProps={{ 'aria-label': 'naked' }}
                 multiline
                 placeholder="Комментарий"
-                onKeyUp={handleKeyUp}
+                onKeyDown={handleKeyDown}
               />
             </div>
 
-            <div className="button--send">
+            <div className="button--send messages-task__send-btn">
               <Button disabled={value.length === 0} variant="outlined" onClick={onAddMessage}>
                 Отправить
               </Button>
+              <span>Отправка Enter</span>
             </div>
           </div>
         </div>

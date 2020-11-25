@@ -1,0 +1,16 @@
+{
+  "name": "practice-site",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Daron06/practice-site.git",
+  "author": "Archakov Dennis <amonbower@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "deploy": "firebase deploy --only hosting"
+  },
+  "dependencies": {
+    "ahooks": "^2.9.1",
+    "firebase": "^8.1.1",
+    "highlight.js": "^10.4.0"
+  }
+}

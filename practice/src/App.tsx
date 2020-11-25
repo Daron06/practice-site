@@ -11,6 +11,7 @@ import Resources from './pages/Resources';
 import Videos from './pages/Videos';
 import { CircularProgress } from '@material-ui/core';
 import { Layout } from './components/Layout';
+import { Auth } from './auth';
 
 function App() {
   const history = useHistory();
@@ -34,6 +35,8 @@ function App() {
         const userInfo = usersRef.doc(profile.providerData[0]?.uid);
         setUserId(profile.providerData[0]?.uid);
         userInfo.get().then((doc) => {
+
+          // Если юзера нет, то добавляем его в активированные
           if (!doc.exists) {
             userInfo.set({
               uid: profile.providerData[0]?.uid,
@@ -44,12 +47,15 @@ function App() {
               learningFlow: 1,
             });
           }
+
+          // Если юзер оплачен, то перекидываем его в /activities
           if (doc.data()?.accepted) {
             setIsPaid(true);
             if (location.pathname === '/') {
               history.push('/activities');
             }
           }
+
           setIsReady(true);
         });
       } else {
@@ -59,7 +65,16 @@ function App() {
         history.push('/');
       }
     });
-  }, [history, location.pathname]);
+  }, []);
+
+  React.useEffect(() => {
+    if (isReady) {
+      if (location.pathname !== '/' && !isPaid) {
+        Auth.signOut();
+        history.push('/');
+      }
+    }
+  }, [isReady, location.pathname]);
 
   if (!isReady) {
     return (
@@ -80,7 +95,7 @@ function App() {
           <Layout user={user}>
             <Switch>
               <Route exact path="/activities">
-                <Activities userId={userId} lessonLength={lessonLength} />
+                {userId && <Activities userId={userId} lessonLength={lessonLength} />}
               </Route>
 
               <Route exact path="/resources">

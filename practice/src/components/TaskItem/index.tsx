@@ -3,6 +3,7 @@ import format from 'date-fns/format';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import { useWhyDidYouUpdate } from 'ahooks';
 
 export interface TaskItemProps {
   status: 'completed' | 'rejected' | 'pending';
@@ -19,7 +20,7 @@ const statusLabel = {
   pending: '— Ожидается проверка',
 };
 
-const TaskItem: React.FC<TaskItemProps> = ({
+const TaskItem: React.FC<TaskItemProps> = React.memo(({
   status,
   number,
   createdAt,
@@ -63,6 +64,6 @@ const TaskItem: React.FC<TaskItemProps> = ({
       {description && <p className="activities__info-description">{description}</p>}
     </div>
   );
-};
+});
 
 export default TaskItem;

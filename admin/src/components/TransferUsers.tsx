@@ -10,16 +10,12 @@ import { IUser } from '../redux/users/types';
 
 const TransferUsers = () => {
   const users = useSelector(selectUsersItems);
-  const [usersNotPaid, setUsersNotPaid] = React.useState<IUser[]>(
-    users.filter((el) => el.accepted === false)
-  );
-  const [usersPaid, setUsersPaid] = React.useState<IUser[]>(
-    users.filter((el) => el.accepted === true)
-  );
+  const [usersNotPaid, setUsersNotPaid] = React.useState<IUser[]>([]);
+  const [usersPaid, setUsersPaid] = React.useState<IUser[]>([]);
 
   React.useEffect(() => {
-    // setUsersNotPaid(users.filter((el) => el.accepted === false));
-    // setUsersPaid(users.filter((el) => el.accepted === true));
+    setUsersNotPaid(users.filter((el) => el.accepted === false));
+    setUsersPaid(users.filter((el) => el.accepted === true));
     // usersRef.onSnapshot((querySnapshot) => {
     //   const user: any[] = [];
     //   const acceptedUser: any[] = [];

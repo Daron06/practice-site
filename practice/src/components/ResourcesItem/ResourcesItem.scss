@@ -1,12 +1,15 @@
 .resources-item {
-  width: 640px;
-  padding-top: 53px;
-  margin: 0 auto;
+  background-color: #fff;
+  height: 100%;
 
   &__wrapper {
-    width: 640px;
+    width: 800px;
     padding: 50px;
     margin: 0 auto;
+
+    iframe {
+      width: 100%;
+    }
 
     & h1 {
       font-size: 42px;
@@ -19,6 +22,7 @@
       font-size: 20px;
       font-style: normal;
       font-weight: 400;
+      line-height: 32px;
     }
   }
 }

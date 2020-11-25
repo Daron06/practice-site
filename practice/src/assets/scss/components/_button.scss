@@ -12,6 +12,12 @@
       &:hover {
         box-shadow: none;
       }
+
+      &:disabled {
+        span {
+          color: #999 !important;
+        }
+      }
     }
     .MuiButton-contained {
       background-color: #edfaf7;
