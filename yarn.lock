@@ -445,14 +445,6 @@ firebase@^8.1.1:
     "@firebase/storage" "0.4.2"
     "@firebase/util" "0.3.4"
 
-for-editor@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/for-editor/-/for-editor-0.3.5.tgz#f2b91026cc920b2d3d631b4db1a491b6f4fa25ff"
-  integrity sha512-yqhn+5do4+i0rgVt87GXnBEJRsC0vJjovQMnT1TsBwz6FUKhECEZdL+QUSGvxc4q71ajGc2zhIpe1YAHFjwegw==
-  dependencies:
-    highlight.js "^9.13.1"
-    marked "^0.6.2"
-
 gaxios@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/gaxios/-/gaxios-4.0.1.tgz#bc7b205a89d883452822cc75e138620c35e3291e"
@@ -602,11 +594,6 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
-
-marked@^0.6.2:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.3.tgz#79babad78af638ba4d522a9e715cdfdd2429e946"
-  integrity sha512-Fqa7eq+UaxfMriqzYLayfqAE40WN03jf+zHjT18/uXNuzjq3TY0XTbrAoPeqSJrAmPz11VuUA+kBPYOhHt9oOQ==
 
 mime@^2.2.0:
   version "2.4.6"
