@@ -34,6 +34,8 @@ function App() {
         const userInfo = usersRef.doc(profile.providerData[0]?.uid);
         setUserId(profile.providerData[0]?.uid);
         userInfo.get().then((doc) => {
+
+          // Если юзера нет, то добавляем его в активированные
           if (!doc.exists) {
             userInfo.set({
               uid: profile.providerData[0]?.uid,
@@ -44,6 +46,8 @@ function App() {
               learningFlow: 1,
             });
           }
+
+          // Если юзер оплачен, то перекидываем его в /activities
           if (doc.data()?.accepted) {
             setIsPaid(true);
             if (location.pathname === '/') {
@@ -59,7 +63,7 @@ function App() {
         history.push('/');
       }
     });
-  }, [history, location.pathname]);
+  }, []);
 
   if (!isReady) {
     return (

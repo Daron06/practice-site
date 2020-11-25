@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import { selectResourcesItems } from '../../redux/resources/selectors';
 import { ResourceItem } from '../../redux/resources/actions';
 import { resourcesRef } from '../../firebase';
+import highlight from 'highlight.js';
+import 'highlight.js/styles/solarized-light.css';
 
 const ResourcesItem = (): React.ReactElement | null => {
   const [resource, setResource] = React.useState<ResourceItem>();
@@ -31,6 +33,12 @@ const ResourcesItem = (): React.ReactElement | null => {
   }, [groupName, resources.length]);
 
   React.useEffect(() => {
+    document.querySelectorAll('code').forEach((block) => {
+      highlight.highlightBlock(block as any);
+    });
+  }, [resource]);
+
+  React.useEffect(() => {
     const group = resources.find((group) => group.groupName === groupName);
 
     if (group) {
@@ -40,9 +48,9 @@ const ResourcesItem = (): React.ReactElement | null => {
 
   return (
     <div className="resources-item">
-      <div className="item-wrapper">
-        <div className="resources-item__wrapper">
-          <h1>{resource?.title}</h1>
+      <div className="resources-item__wrapper">
+        <h1>{resource?.title}</h1>
+        <div className="markdown-content">
           {resource?.text && <Markdown source={resource.text} />}
         </div>
       </div>

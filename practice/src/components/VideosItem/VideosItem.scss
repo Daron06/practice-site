@@ -1,14 +1,6 @@
 .videos-item {
-  margin: 0 auto;
-  width: 820px;
-  padding-top: 54px;
-  padding-bottom: 20px;
-
-  p {
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-  }
+  background-color: #fff;
+  height: 100%;
 
   &__modal {
     padding: 33px 36px;
@@ -30,6 +22,12 @@
     }
   }
   &-wrapper {
+    width: 800px;
     padding: 51px;
+    margin: 0 auto;
+
+    iframe {
+      width: 100%;
+    }
   }
 }

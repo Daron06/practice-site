@@ -1,42 +1,30 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { IconButton } from '@material-ui/core';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Avatar from '@material-ui/core/Avatar';
-import { useLocation } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import { Auth } from '../../auth';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
 import { lessonRef } from '../../firebase';
 import { selectTasksItems } from '../../redux/activities/selectors';
+import { Title } from './Title';
 
-const locationTitle = {
-  activities: 'Активность',
-  resources: 'Материалы',
-  videos: 'Видео',
-};
-
-type Pathname = 'activities' | 'resources' | 'videos';
 
 interface HeaderProps {
   userInfo: firebase.UserInfo | null | undefined;
 }
 
-const Header: React.FC<HeaderProps> = ({ userInfo }) => {
+const Header: React.FC<HeaderProps> = React.memo(({ userInfo }) => {
   const [lessonLength, setLessonLength] = React.useState<number>(0);
 
-  const obj = useLocation();
-  const path = obj.pathname.split('/')[1] as Pathname;
-  const title = locationTitle[path];
+
   const tasks = useSelector(selectTasksItems);
 
   const calcInterest = Math.round(
     (tasks.filter((el: any) => el.status === 'completed').length / lessonLength) * 100
   );
 
-  let history = useHistory();
 
   React.useEffect(() => {
     lessonRef.get().then((doc) => {
@@ -54,16 +42,7 @@ const Header: React.FC<HeaderProps> = ({ userInfo }) => {
 
   return (
     <header className="header">
-      <div className="header__title">
-        {obj.pathname.split('/').length > 2 && (
-          <div className="header__title-button">
-            <IconButton onClick={() => history.goBack()}>
-              <ArrowBackIosIcon />
-            </IconButton>
-          </div>
-        )}
-        <p className="header__title-item">{title}</p>
-      </div>
+      <Title />
       <div className="header__user">
         <div className="header__avatar">
           <div className="circle">
@@ -98,6 +77,6 @@ const Header: React.FC<HeaderProps> = ({ userInfo }) => {
       </div>
     </header>
   );
-};
+});
 
 export default Header;
