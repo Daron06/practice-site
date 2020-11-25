@@ -115,7 +115,7 @@ const TaskItem = ({ taskCurrentUser, setUserMessages, setCurrentTaskInfo }: any)
         )}
       </div>
 
-      <p>{'ссылка на гитхаб: ' + taskCurrentUser.reference}</p>
+      <p>Ссылка на гитхаб:{taskCurrentUser.reference}</p>
       <div
         style={{
           display: 'flex',

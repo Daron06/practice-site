@@ -9,6 +9,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
+import { selectVideosItems } from '../../redux/videos/selectors';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,29 +27,40 @@ const VideosItem = ({ userId }: any) => {
   const [open, setOpen] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [value, setValue] = React.useState('');
-  const [valueRef, setValueRef] = React.useState('');
-  const [lessen, setLessen] = React.useState<firebase.firestore.DocumentData | undefined>();
+  const [urlValue, setUrlValue] = React.useState('');
   const classes = useStyles();
+  const videos = useSelector(selectVideosItems);
+  const [lesson, setLesson] = React.useState<any>();
 
   const { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
-    const fetchLesson = async () => {
-      try {
-        const doc = await lessonRef.doc(id).get();
-        setLessen(doc.data());
-      } catch (error) {
-        console.error(error);
+    console.log(id, 1);
+    if (!videos.length) {
+      lessonRef
+        .doc(id)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            console.log(data, 2);
+            if (data) {
+              setLesson(data);
+            }
+          }
+        });
+    } else {
+      const video = videos.find(obj => obj.number === id);
+      if (video) {
+        setLesson(video);
       }
-    };
-
-    fetchLesson();
-  }, [id]);
+    }
+  }, [id, videos.length]);
 
   const handleClose = () => {
     setOpen((prev) => (prev = false));
     setValue((prev) => (prev = ''));
-    setValueRef((prev) => (prev = ''));
+    setUrlValue((prev) => (prev = ''));
   };
 
   const handleOpen = () => {
@@ -61,14 +74,18 @@ const VideosItem = ({ userId }: any) => {
 
     setOpenSnackbar(false);
   };
+
   const onAddTask = async () => {
-    if (!!lessen) {
+    if (!urlValue.match(/https:\/\/github.com\/.+?\/.+?\/pull\/\d+/)) {
+      return alert('Неверно указана ссылка на pull-реквест');
+    }
+    if (lesson) {
       const doc = await tasksRef.add({
-        number: lessen.number,
+        number: lesson.number,
         createdAt: new Date(),
         status: 'pending',
         decision: value,
-        reference: valueRef,
+        reference: urlValue,
         uid: userId,
         newTask: true,
       });
@@ -77,7 +94,7 @@ const VideosItem = ({ userId }: any) => {
 
       setOpen(false);
       setValue('');
-      setValueRef('');
+      setUrlValue('');
       setOpenSnackbar(true);
     }
   };
@@ -87,20 +104,23 @@ const VideosItem = ({ userId }: any) => {
   };
 
   const handleChangeRef = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValueRef(event.target.value);
+    setUrlValue(event.target.value);
   };
 
-  if (!lessen) {
+  if (!lesson) {
     return <CircularProgress />;
   }
 
-  const videoId = lessen.videoPath.split('v=')[1];
+  console.log(lesson);
+
+  const videoId = lesson.videoPath.split('v=')[1];
 
   return (
     <div className="videos-item">
-      <div className="item-wrapper videos-item-container">
+      <div>
         <div className="videos-item-wrapper">
-          <h2>Урок №{lessen.number}</h2>
+          <h1>Урок №{lesson.number}</h1>
+          <br />
           <iframe
             title="video"
             width="717"
@@ -110,7 +130,14 @@ const VideosItem = ({ userId }: any) => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
-          <Markdown source={lessen.text} />
+          <br />
+          <br />
+
+          <div className="markdown-content">
+            <Markdown source={lesson.text} />
+          </div>
+
+          <div style={{ height: 30 }} />
 
           <div className="button--send">
             <Button variant="contained" onClick={handleOpen}>
@@ -126,19 +153,20 @@ const VideosItem = ({ userId }: any) => {
             aria-describedby="simple-modal-description"
           >
             <div className="item-wrapper videos-item__modal">
-              <h2>Запросить проверку задания №{lessen.number}</h2>
+              <h2>Запросить проверку задания №{lesson.number}</h2>
+              <br />
               <div>
                 <TextField
                   id="standard-textarea"
                   label="Ссылка на pull request"
                   placeholder="https://github.com/user/my-job/pull/1488"
                   multiline
-                  value={valueRef}
+                  value={urlValue}
                   onChange={handleChangeRef}
                   fullWidth
                 />
               </div>
-              <p>Комментарий: </p>
+              <br />
               <div className="videos-item__modal-field">
                 <InputBase
                   className="scrollbar"
@@ -158,7 +186,7 @@ const VideosItem = ({ userId }: any) => {
                   </Button>
                 </div>
                 <div className="button--send">
-                  <Button onClick={onAddTask} disabled={!valueRef.length} variant="contained">
+                  <Button onClick={onAddTask} disabled={!urlValue.length} variant="contained">
                     Отправить
                   </Button>
                 </div>

@@ -1,24 +1,34 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { lessonRef } from '../../firebase';
+import { setVideosItems } from '../../redux/videos/actions';
+import { selectVideosItems } from '../../redux/videos/selectors';
 const Videos = () => {
-  const [videosItem, setVideosItem] = React.useState<any[]>([]);
+  const dispatch = useDispatch();
+  const videos = useSelector(selectVideosItems);
 
   React.useEffect(() => {
-    lessonRef.get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        setVideosItem((prev) => [
-          ...prev,
-          { videoPath: doc.data().videoPath, number: doc.data().number },
-        ]);
+    if (!videos.length) {
+      lessonRef.get().then((querySnapshot: any) => {
+        dispatch(
+          setVideosItems(
+            querySnapshot.docs.map((doc: { id: string; data: () => any }) => {
+              return {
+                videoPath: doc.data().videoPath,
+                number: doc.data().number
+              };
+            })
+          )
+        );
       });
-    });
-  }, []);
+    }
+  }, [videos, dispatch]);
 
   return (
     <div className="videos">
-      {videosItem &&
-        videosItem.map(({ number, videoPath }) => (
+      {videos &&
+        videos.map(({ number, videoPath }) => (
           <div key={number} className="videos-wrapper">
             <Link to={`/videos/${number}`}>
               <div className="item-wrapper">

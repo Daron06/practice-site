@@ -16,24 +16,9 @@ const TransferUsers = () => {
   React.useEffect(() => {
     setUsersNotPaid(users.filter((el) => el.accepted === false));
     setUsersPaid(users.filter((el) => el.accepted === true));
-    // usersRef.onSnapshot((querySnapshot) => {
-    //   const user: any[] = [];
-    //   const acceptedUser: any[] = [];
-
-    //   querySnapshot.forEach((doc) => {
-    //     if (doc.data().accepted) {
-    //       acceptedUser.push(doc.data());
-    //     }
-    //     if (!doc.data().accepted) {
-    //       user.push(doc.data());
-    //     }
-    //   });
-    //   setUsers(user);
-    //   setAcceptedUsers(acceptedUser);
-    // });
   }, [users]);
 
-  const transferUsers = (item) => {
+  const transferUsers = (item: IUser) => {
     if (item.accepted) {
       usersRef.doc(item.uid).update({
         accepted: false,
