@@ -3,29 +3,40 @@ import { Avatar, Chip } from '@material-ui/core';
 import { IconButton } from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { usersRef } from '../firebase';
+
+import { useSelector } from 'react-redux';
+import { selectUsersItems } from '../redux/users/selectors';
+import { IUser } from '../redux/users/types';
+
 const TransferUsers = () => {
-  const [users, setUsers] = React.useState<any[]>([]);
-  const [acceptedUsers, setAcceptedUsers] = React.useState<any[]>([]);
+  const users = useSelector(selectUsersItems);
+  const [usersNotPaid, setUsersNotPaid] = React.useState<IUser[]>(
+    users.filter((el) => el.accepted === false)
+  );
+  const [usersPaid, setUsersPaid] = React.useState<IUser[]>(
+    users.filter((el) => el.accepted === true)
+  );
 
   React.useEffect(() => {
-    usersRef.onSnapshot((querySnapshot) => {
-      const user: any[] = [];
-      const acceptedUser: any[] = [];
+    // setUsersNotPaid(users.filter((el) => el.accepted === false));
+    // setUsersPaid(users.filter((el) => el.accepted === true));
+    // usersRef.onSnapshot((querySnapshot) => {
+    //   const user: any[] = [];
+    //   const acceptedUser: any[] = [];
+    //   querySnapshot.forEach((doc) => {
+    //     if (doc.data().accepted) {
+    //       acceptedUser.push(doc.data());
+    //     }
+    //     if (!doc.data().accepted) {
+    //       user.push(doc.data());
+    //     }
+    //   });
+    //   setUsers(user);
+    //   setAcceptedUsers(acceptedUser);
+    // });
+  }, [users]);
 
-      querySnapshot.forEach((doc) => {
-        if (doc.data().accepted) {
-          acceptedUser.push(doc.data());
-        }
-        if (!doc.data().accepted) {
-          user.push(doc.data());
-        }
-      });
-      setUsers(user);
-      setAcceptedUsers(acceptedUser);
-    });
-  }, []);
-
-  const transferUsers = (item: any) => {
+  const transferUsers = (item: IUser) => {
     if (item.accepted) {
       usersRef.doc(item.uid).update({
         accepted: false,
@@ -45,12 +56,12 @@ const TransferUsers = () => {
   return (
     <div className="admin__users">
       <div className="admin__users__auth">
-        <h2>Не оплатившие курс ({users.length}):</h2>
+        <h2>Не оплатившие курс ({usersNotPaid.length}):</h2>
         <div className="admin__users__list">
-          {!users.length ? (
+          {!usersNotPaid.length ? (
             <div>Кажись пусто...</div>
           ) : (
-            users.map((item: any) => (
+            usersNotPaid.map((item) => (
               <div key={item.uid} className="admin__users__list__item">
                 <Chip
                   variant="outlined"
@@ -67,12 +78,12 @@ const TransferUsers = () => {
         </div>
       </div>
       <div className="admin__users__accepted">
-        <h2> Оплатившие курс ({acceptedUsers.length}):</h2>
+        <h2> Оплатившие курс ({usersPaid.length}):</h2>
         <div className="admin__users__list__accepted">
-          {!acceptedUsers.length ? (
+          {!usersPaid.length ? (
             <div>Кажись пусто...</div>
           ) : (
-            acceptedUsers.map((item: any) => (
+            usersPaid.map((item) => (
               <div key={item.uid} className="admin__users__list__item">
                 <Chip
                   variant="outlined"

@@ -1,32 +1,26 @@
 import React from 'react';
-import { tasksRef } from '../firebase';
+import { useSelector } from 'react-redux';
+import { selectTasksItems } from '../redux/tasks/selectors';
+import { ITask } from '../redux/tasks/types';
 import TaskItem from './TaskItem';
 
-export interface TaskItemProps {
-  status: 'completed' | 'rejected' | 'pending';
-  id: string;
-  number: number;
-  createdAt: Date;
-  responseAt?: Date;
-  newTask: boolean;
-  description?: string;
-}
-
 const TasksPending = () => {
-  const [tasksPending, setTasksPending] = React.useState<any[]>([]);
+  const [tasksPending, setTasksPending] = React.useState<ITask[]>([]);
+  const tasks = useSelector(selectTasksItems);
 
   React.useEffect(() => {
-    tasksRef.where('status', '==', 'pending').onSnapshot(function (querySnapshot: any) {
-      const tasks: TaskItemProps[] = [];
-      querySnapshot.forEach(function (doc: any) {
-        tasks.push({
-          ...doc.data(),
-          taskId: doc.id,
-        });
-      });
-      setTasksPending(tasks);
-    });
-  }, []);
+    // tasksRef.where('status', '==', 'pending').onSnapshot(function (querySnapshot: any) {
+    //   const tasks: TaskItemProps[] = [];
+    //   querySnapshot.forEach(function (doc: any) {
+    //     tasks.push({
+    //       ...doc.data(),
+    //       taskId: doc.id,
+    //     });
+    //   });
+    //   setTasksPending(tasks);
+    // });
+    setTasksPending(tasks.filter((el) => el.status === 'pending'));
+  }, [tasks]);
 
   return (
     <div className="admin__table__content--tasks scrollbar">

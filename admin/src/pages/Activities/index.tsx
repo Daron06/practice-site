@@ -7,7 +7,7 @@ import { ADMIN_AVATAR, ADMIN_ID } from '../../App';
 
 export interface TaskItemProps {
   status: 'completed' | 'rejected' | 'pending';
-  id: string;
+  taskId: string;
   number: number;
   createdAt: Date;
   responseAt?: Date;
@@ -32,6 +32,7 @@ const AdminActivities = () => {
       setAcceptedUsers(user);
     });
   }, []);
+
   const onGetUserTasks = (id: any) => {
     setUserMessages([]);
     setCurrentTaskInfo(undefined);
@@ -51,10 +52,6 @@ const AdminActivities = () => {
       });
   };
   const onAddMessage = () => {
-    console.log(value);
-    console.log(!!value);
-    console.log(value.length);
-    console.log(!!value.length);
     if (!!value) {
       console.log(currentTaskInfo);
       messagesRef.add({

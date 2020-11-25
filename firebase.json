@@ -2,13 +2,26 @@
   "hosting": [
     {
       "target": "admin",
-      "public": "admin/build"
+      "public": "admin/build",
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     },
     {
       "target": "practice",
-      "public": "practice/build"
+      "public": "practice/build",
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ],
+
   "firestore": {
     "indexes": "firestore.indexes.json"
   }
