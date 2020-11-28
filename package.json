@@ -6,7 +6,9 @@
   "author": "Archakov Dennis <amonbower@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "firebase deploy --only hosting",
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "ahooks": "^2.9.1",
