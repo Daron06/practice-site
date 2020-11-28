@@ -25,7 +25,10 @@ export default function App() {
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(function (profile) {
+      console.log(1);
       if (profile) {
+        console.log(2);
+
         usersRef
           .doc(profile.uid)
           .get()

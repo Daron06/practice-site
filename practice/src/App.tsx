@@ -31,6 +31,7 @@ function App() {
     firebase.auth().onAuthStateChanged(function (profile) {
       if (profile) {
         setUser(profile);
+        console.log(profile);
         const userInfo = usersRef.doc(profile.uid);
         userInfo.get().then((doc) => {
           // Если юзера нет, то добавляем его в активированные
