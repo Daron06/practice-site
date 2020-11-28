@@ -9,19 +9,34 @@ import TasksPending from './components/TasksPending';
 import NewMessages from './components/NewMessages';
 
 import { useDispatch } from 'react-redux';
-import { tasksRef, usersRef } from './firebase';
+import { tasksRef, usersRef, firebase } from './firebase';
 import { setTasks } from './redux/tasks/actions';
 import { ITask } from './redux/tasks/types';
 import { setUsers } from './redux/users/actions';
 import { IUser } from './redux/users/types';
+import { Auth } from './auth';
 
 export const ADMIN_ID: string = '12086860';
 export const ADMIN_AVATAR: string = 'https://avatars3.githubusercontent.com/u/12086860?v=4';
 
 export default function App() {
+  const [admin, setAdmin] = React.useState(false);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (profile) {
+      if (profile) {
+        usersRef
+          .doc(profile.uid)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              setAdmin(doc.data()?.admin || false);
+            }
+          });
+      }
+    });
+
     tasksRef.onSnapshot((querySnapshot) => {
       const items: ITask[] = [];
       querySnapshot.forEach((doc) => {
@@ -57,6 +72,19 @@ export default function App() {
       dispatch(setUsers(user));
     });
   }, [dispatch]);
+
+  const handleSignInClick = () => {
+    Auth.signIn();
+  };
+
+  if (!admin) {
+    return (
+      <div className="signin__item">
+        <h1>Вход в кабинет</h1>
+        <button onClick={handleSignInClick}>Войти через GitHub</button>
+      </div>
+    );
+  }
 
   return (
     <div className="App">

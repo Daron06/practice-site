@@ -10,8 +10,6 @@ const TaskMessages = ({ message, newMessage }: any) => {
     messagesRef.doc(id).delete();
   };
 
-  console.log(message)
-
   return (
     <div className="admin__message__item">
       <h3>Задание №2</h3>

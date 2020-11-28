@@ -1,5 +1,5 @@
 import React from 'react';
-import { usersRef, tasksRef, messagesRef } from '../../firebase';
+import { tasksRef, messagesRef } from '../../firebase';
 import { Avatar, Button, Icon, InputBase } from '@material-ui/core';
 import TaskItem from '../../components/TaskItem';
 import TaskMessages from '../../components/TaskMessages';
@@ -18,27 +18,11 @@ export interface TaskItemProps {
 }
 
 const AdminActivities = () => {
-  // const [acceptedUsers, setAcceptedUsers] = React.useState<any>([]);
   const [userTasks, setUserTasks] = React.useState<any[]>([]);
   const [userMessages, setUserMessages] = React.useState<any[]>([]);
   const [currentTaskInfo, setCurrentTaskInfo] = React.useState<any>();
   const [value, setValue] = React.useState<any>('');
   const users = useSelector(selectUsersItems);
-
-  // React.useEffect(() => {
-    
-  //   usersRef.where('accepted', '==', true).onSnapshot(function (querySnapshot: any) {
-  //     const user: any[] = [];
-
-  //     querySnapshot.forEach(function (doc: any) {
-  //       user.push(doc.data());
-  //       console.log(doc.data())
-  //     });
-
-  //     console.log(user);
-  //     setAcceptedUsers(user);
-  //   });
-  // }, []);
 
   const onGetUserTasks = (id: any) => {
     setUserMessages([]);
@@ -88,20 +72,22 @@ const AdminActivities = () => {
     <div>
       <div className="admin__table">
         <div className="admin__table__header">
-          {users.filter(user => user.accepted).map((user: any) => {
-            return (
-              <div className="admin__table__header--item" key={user.uid || 0}>
-                <Button
-                  startIcon={<Avatar src={user.photoURL || undefined} />}
-                  variant="contained"
-                  color="primary"
-                  onClick={() => onGetUserTasks(user.uid)}
-                >
-                  {user.displayName || user.email || user.uid}
-                </Button>
-              </div>
-            );
-          })}
+          {users
+            .filter((user) => user.accepted)
+            .map((user: any) => {
+              return (
+                <div className="admin__table__header--item" key={user.uid || 0}>
+                  <Button
+                    startIcon={<Avatar src={user.photoURL || undefined} />}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => onGetUserTasks(user.uid)}
+                  >
+                    {user.displayName || user.email || user.uid}
+                  </Button>
+                </div>
+              );
+            })}
         </div>
         <div className="admin__table__content">
           <div className="admin__table__content--tasks scrollbar">

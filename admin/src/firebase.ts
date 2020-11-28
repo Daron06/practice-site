@@ -19,3 +19,4 @@ const lessonRef = db.collection("lesson");
 const resourcesRef = db.collection("resources");
 
 export { lessonRef, tasksRef, firebase, usersRef, resourcesRef, messagesRef };
+

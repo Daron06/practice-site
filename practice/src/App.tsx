@@ -19,7 +19,6 @@ function App() {
   const [user, setUser] = React.useState<firebase.User>();
   const [isPaid, setIsPaid] = React.useState<boolean>(false);
   const [isReady, setIsReady] = React.useState(false);
-  const [userId, setUserId] = React.useState<any>();
   const [lessonLength, setLessonLength] = React.useState<number>(0);
 
   React.useEffect(() => {
@@ -32,14 +31,12 @@ function App() {
     firebase.auth().onAuthStateChanged(function (profile) {
       if (profile) {
         setUser(profile);
-        const userInfo = usersRef.doc(profile.providerData[0]?.uid);
-        setUserId(profile.providerData[0]?.uid);
+        const userInfo = usersRef.doc(profile.uid);
         userInfo.get().then((doc) => {
-
           // Если юзера нет, то добавляем его в активированные
           if (!doc.exists) {
             userInfo.set({
-              uid: profile.providerData[0]?.uid,
+              uid: profile.uid,
               displayName: profile.providerData[0]?.displayName,
               photoURL: profile.providerData[0]?.photoURL,
               email: profile.providerData[0]?.email,
@@ -88,14 +85,14 @@ function App() {
     <div className="app">
       <div className="content">
         <Route exact path="/">
-          <SignIn userId={user?.providerData[0]?.uid} isPaid={isPaid} />
+          <SignIn userId={user?.uid} isPaid={isPaid} />
         </Route>
 
         <Route path="/:nahuy">
           <Layout user={user}>
             <Switch>
               <Route exact path="/activities">
-                {userId && <Activities userId={userId} lessonLength={lessonLength} />}
+                {user && <Activities userId={user?.uid} lessonLength={lessonLength} />}
               </Route>
 
               <Route exact path="/resources">
@@ -107,7 +104,7 @@ function App() {
               </Route>
 
               <Route path="/activities/:id">
-                <MessagesTask userId={userId} />
+                <MessagesTask userId={user?.uid} />
               </Route>
 
               <Route path="/resources/:id">
@@ -115,7 +112,7 @@ function App() {
               </Route>
 
               <Route path="/videos/:id">
-                <VideosItem userId={userId} />
+                <VideosItem userId={user?.uid} />
               </Route>
 
               <Route>
