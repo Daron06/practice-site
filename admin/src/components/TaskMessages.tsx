@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { messagesRef } from '../firebase';
+
 const TaskMessages = ({ message, setOpen, setTaskId, newMessage }: any) => {
   const onDeleteMessage = (id: any) => {
     messagesRef.doc(id).delete();

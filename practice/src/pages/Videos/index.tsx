@@ -16,7 +16,8 @@ const Videos = () => {
             querySnapshot.docs.map((doc: { id: string; data: () => any }) => {
               return {
                 videoPath: doc.data().videoPath,
-                number: doc.data().number
+                number: doc.data().number,
+                text: doc.data().text,
               };
             })
           )
