@@ -11,6 +11,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import { selectVideosItems } from '../../redux/videos/selectors';
 import { useSelector } from 'react-redux';
+import highlight from 'highlight.js';
+import 'highlight.js/styles/solarized-light.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,6 +58,12 @@ const VideosItem = ({ user }: any) => {
       }
     }
   }, [id, videos]);
+
+  React.useEffect(() => {
+    document.querySelectorAll('code').forEach((block) => {
+      highlight.highlightBlock(block as any);
+    });
+  }, [lesson]);
 
   const handleClose = () => {
     setOpen((prev) => (prev = false));
