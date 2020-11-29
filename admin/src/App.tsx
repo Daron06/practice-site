@@ -77,14 +77,14 @@ export default function App() {
     Auth.signIn();
   };
 
-  if (!admin) {
-    return (
-      <div className="signin__item">
-        <h1>Вход в кабинет</h1>
-        <button onClick={handleSignInClick}>Войти через GitHub</button>
-      </div>
-    );
-  }
+  // if (!admin) {
+  //   return (
+  //     <div className="signin__item">
+  //       <h1>Вход в кабинет</h1>
+  //       <button onClick={handleSignInClick}>Войти через GitHub</button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="App">
