@@ -6,15 +6,12 @@
   "author": "Archakov Dennis <amonbower@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "deploy": "firebase deploy --only hosting",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build-admin": "cd admin && npm run build",
     "build-practice": "cd practice && npm run build"
   },
   "dependencies": {
-    "ahooks": "^2.9.1",
-    "firebase": "^8.1.1",
-    "highlight.js": "^10.4.0"
+    "firebase": "^8.1.1"
   }
 }
