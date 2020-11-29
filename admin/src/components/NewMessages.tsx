@@ -3,8 +3,9 @@ import { ADMIN_ID } from '../App';
 import { messagesRef } from '../firebase';
 import TaskMessages from './TaskMessages';
 
-const NewMessages = () => {
+const NewMessages = ({ setTaskId, setOpen }: any) => {
   const [newMessages, setNewMessages] = React.useState<any>([]);
+
   React.useEffect(() => {
     messagesRef
       .where('newMessage', '==', true)
@@ -30,7 +31,15 @@ const NewMessages = () => {
       </h2>
       {!!newMessages.length &&
         newMessages.map((message: { messageId: string }) => {
-          return <TaskMessages key={message.messageId} newMessage={true} message={message} />;
+          return (
+            <TaskMessages
+              key={message.messageId}
+              setOpen={setOpen}
+              setTaskId={setTaskId}
+              message={message}
+              newMessage={true}
+            />
+          );
         })}
     </div>
   );

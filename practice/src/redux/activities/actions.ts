@@ -8,7 +8,7 @@ export interface Task {
   createdAt: Date;
   responseAt: Date;
   description?: string;
-  decision: string;
+  decision?: any;
   reference: string;
 }
 

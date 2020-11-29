@@ -4,16 +4,18 @@ import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { messagesRef } from '../firebase';
-import DialogModal from './DialogModal';
-const TaskMessages = ({ message, newMessage }: any) => {
+const TaskMessages = ({ message, setOpen, setTaskId, newMessage }: any) => {
   const onDeleteMessage = (id: any) => {
     messagesRef.doc(id).delete();
   };
 
+  const openModal = () => {
+    setTaskId(message.taskId);
+    setOpen(true);
+  };
+
   return (
     <div className="admin__message__item">
-      <h3>Задание №2</h3>
-      <br />
       <div className="admin__message__user">
         <div className="admin__message__user--info">
           <Avatar
@@ -30,7 +32,7 @@ const TaskMessages = ({ message, newMessage }: any) => {
         </div>
         <div>
           {newMessage ? (
-            <DialogModal taskId={message.taskId} />
+            <Button onClick={openModal}>Перейти в диалог</Button>
           ) : (
             <Button
               color="secondary"

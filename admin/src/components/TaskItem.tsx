@@ -1,6 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { tasksRef, messagesRef } from '../firebase';
+import { tasksRef, messagesRef, firebase } from '../firebase';
 
 import MailIcon from '@material-ui/icons/Mail';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -14,8 +14,16 @@ import {
   Modal,
   Select,
 } from '@material-ui/core';
+import { ADMIN_AVATAR, ADMIN_NAME } from '../App';
 
-const TaskItem = ({ taskCurrentUser, setUserMessages, setCurrentTaskInfo }: any) => {
+const TaskItem = ({
+  taskCurrentUser,
+  setUserMessages,
+  setCurrentTaskInfo,
+  setOpen,
+  setTaskId,
+  tasksPending,
+}: any) => {
   const [valueModal, setValueModal] = React.useState<any>('');
   const [openModal, setOpenModal] = React.useState<any>(false);
   const [statusTask, setStatusTask] = React.useState<any>();
@@ -43,15 +51,17 @@ const TaskItem = ({ taskCurrentUser, setUserMessages, setCurrentTaskInfo }: any)
   };
 
   const onAddTask = (status: string) => {
-    tasksRef.doc(taskCurrentUser.taskId).set({
+    console.log(taskCurrentUser);
+    tasksRef.doc(taskCurrentUser.taskId).update({
       status,
-      number: taskCurrentUser.number,
-      createdAt: taskCurrentUser.createdAt,
-      decision: valueModal,
-      reference: '',
+      decision: firebase.firestore.FieldValue.arrayUnion({
+        text: valueModal,
+        avatar: ADMIN_AVATAR,
+        name: ADMIN_NAME,
+        createdAt: new Date(),
+      }),
       newTask: true,
       responseAt: new Date(),
-      uid: taskCurrentUser.uid,
     });
 
     setOpenModal(false);
@@ -73,6 +83,11 @@ const TaskItem = ({ taskCurrentUser, setUserMessages, setCurrentTaskInfo }: any)
         });
         setUserMessages(messages);
       });
+  };
+
+  const onOpenModalPendingTask = () => {
+    setTaskId(taskCurrentUser.taskId);
+    setOpen(true);
   };
 
   const handleChangeModal = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,17 +137,31 @@ const TaskItem = ({ taskCurrentUser, setUserMessages, setCurrentTaskInfo }: any)
           justifyContent: 'space-between',
         }}
       >
-        <Button variant="contained" color="primary" onClick={onGetMessages}>
-          Сообщения
-          <Badge
-            style={{ color: 'grey', marginLeft: 5 }}
-            color="secondary"
-            badgeContent={0}
-            variant="dot"
-          >
-            <MailIcon />
-          </Badge>
-        </Button>
+        {tasksPending ? (
+          <Button variant="contained" color="primary" onClick={onOpenModalPendingTask}>
+            Сообщения
+            <Badge
+              style={{ color: 'grey', marginLeft: 5 }}
+              color="secondary"
+              badgeContent={0}
+              variant="dot"
+            >
+              <MailIcon />
+            </Badge>
+          </Button>
+        ) : (
+          <Button variant="contained" color="primary" onClick={onGetMessages}>
+            Сообщения
+            <Badge
+              style={{ color: 'grey', marginLeft: 5 }}
+              color="secondary"
+              badgeContent={0}
+              variant="dot"
+            >
+              <MailIcon />
+            </Badge>
+          </Button>
+        )}
 
         <Button color="secondary" onClick={onDeleteTask} startIcon={<DeleteIcon />}>
           DELETE

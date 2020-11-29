@@ -3,25 +3,18 @@ import { tasksRef, messagesRef } from '../../firebase';
 import { Avatar, Button, Icon, InputBase } from '@material-ui/core';
 import TaskItem from '../../components/TaskItem';
 import TaskMessages from '../../components/TaskMessages';
-import { ADMIN_AVATAR, ADMIN_ID } from '../../App';
+import { ADMIN_AVATAR, ADMIN_ID, ADMIN_NAME } from '../../App';
 import { selectUsersItems } from '../../redux/users/selectors';
 import { useSelector } from 'react-redux';
-
-export interface TaskItemProps {
-  status: 'completed' | 'rejected' | 'pending';
-  taskId: string;
-  number: number;
-  createdAt: Date;
-  responseAt?: Date;
-  newTask: boolean;
-  description?: string;
-}
+import { ITask } from '../../redux/tasks/types';
+import { format } from 'date-fns';
+import ReactMarkdown from 'react-markdown';
 
 const AdminActivities = () => {
-  const [userTasks, setUserTasks] = React.useState<any[]>([]);
+  const [userTasks, setUserTasks] = React.useState<ITask[]>([]);
   const [userMessages, setUserMessages] = React.useState<any[]>([]);
   const [currentTaskInfo, setCurrentTaskInfo] = React.useState<any>();
-  const [value, setValue] = React.useState<any>('');
+  const [value, setValue] = React.useState<string>('');
   const users = useSelector(selectUsersItems);
 
   const onGetUserTasks = (id: any) => {
@@ -31,8 +24,8 @@ const AdminActivities = () => {
     tasksRef
       .where('uid', '==', id)
       .orderBy('createdAt', 'asc')
-      .onSnapshot(function (querySnapshot: any) {
-        const items: TaskItemProps[] = [];
+      .onSnapshot(function (querySnapshot) {
+        const items: ITask[] = [];
         querySnapshot.forEach(function (doc: any) {
           items.push({
             ...doc.data(),
@@ -46,12 +39,12 @@ const AdminActivities = () => {
     if (!!value) {
       console.log(currentTaskInfo);
       messagesRef.add({
-        name: 'Царевич',
-        text: value,
+        name: ADMIN_NAME,
         profilePicUrl: ADMIN_AVATAR,
+        uid: ADMIN_ID,
+        text: value,
         createdAt: new Date(),
         newMessage: true,
-        uid: ADMIN_ID,
         taskId: currentTaskInfo.taskId,
       });
     }
@@ -74,9 +67,9 @@ const AdminActivities = () => {
         <div className="admin__table__header">
           {users
             .filter((user) => user.accepted)
-            .map((user: any) => {
+            .map((user) => {
               return (
-                <div className="admin__table__header--item" key={user.uid || 0}>
+                <div className="admin__table__header--item" key={user.uid}>
                   <Button
                     startIcon={<Avatar src={user.photoURL || undefined} />}
                     variant="contained"
@@ -107,8 +100,40 @@ const AdminActivities = () => {
           <div className="admin__table__content--messages scrollbar">
             {currentTaskInfo && (
               <div className="admin__table__content--messages--info">
-                <div>Ссылка на гитхаб: {currentTaskInfo.reference || 'Отсутствует'}</div>
-                <div>Сообщение пользователя: {currentTaskInfo.decision || 'Отсутствует'}</div>
+                <p className="admin__decision-link">
+                  <b>Ссылка на pull-реквест: </b>
+                  <a href={currentTaskInfo.reference} rel="noopener noreferrer" target="_blank">
+                    {currentTaskInfo.reference}
+                  </a>
+                </p>
+                <div className="admin__decision">
+                  <b>Закреплённые комментарии:</b>
+                  {currentTaskInfo.decision.map((item: any) => {
+                    return (
+                      <div>
+                        <div className="admin__message__user">
+                          <div className="admin__message__user--info">
+                            <Avatar
+                              className="admin__message__avatar"
+                              alt="user avatar"
+                              src={item.avatar || undefined}
+                            />
+                            <div className="admin__message__title">
+                              <span className="admin__message__name">{item.name}</span>
+                              <span className="admin__message__info">
+                                Отправлено{' '}
+                                {format(item.createdAt.toDate(), 'dd.MM.yyyy, в HH.mm.ss')}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="admin__message__item-text">
+                          <ReactMarkdown source={item.text} />
+                        </div>
+                      </div>
+                    );
+                  }) || 'Отсутствует'}
+                </div>
               </div>
             )}
 

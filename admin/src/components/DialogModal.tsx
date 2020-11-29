@@ -4,50 +4,41 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { messagesRef, tasksRef } from '../firebase';
 import TaskMessages from './TaskMessages';
-import { Icon, InputBase } from '@material-ui/core';
-import { ADMIN_ID, ADMIN_AVATAR } from '../App';
+import { Avatar, Icon, InputBase } from '@material-ui/core';
+import { ADMIN_ID, ADMIN_AVATAR, ADMIN_NAME } from '../App';
+import { format } from 'date-fns';
+import ReactMarkdown from 'react-markdown';
 
-export default function DialogModal({ taskId }: any) {
+export default function DialogModal({ taskId, open, setOpen }: any) {
   const [value, setValue] = React.useState('');
-  const [open, setOpen] = React.useState(false);
   const [messagesTask, setMessagesTask] = React.useState([]);
   const [currentTask, setCurrentTask] = React.useState<any>([]);
-  const descriptionElementRef = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
     if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
+      messagesRef
+        .where('taskId', '==', taskId)
+        .orderBy('createdAt', 'asc')
+        .onSnapshot(function (querySnapshot: any) {
+          const message: any = [];
+          querySnapshot.forEach(function (doc: any) {
+            message.push({
+              ...doc.data(),
+              messageId: doc.id,
+            });
+          });
+          setMessagesTask(message);
+        });
+
+      tasksRef
+        .doc(taskId)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            setCurrentTask(doc.data());
+          }
+        });
     }
   }, [open]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-
-    messagesRef
-      .where('taskId', '==', taskId)
-      .orderBy('createdAt', 'asc')
-      .onSnapshot(function (querySnapshot: any) {
-        const message: any = [];
-        querySnapshot.forEach(function (doc: any) {
-          message.push({
-            ...doc.data(),
-            messageId: doc.id,
-          });
-        });
-        setMessagesTask(message);
-      });
-
-    tasksRef
-      .doc(taskId)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          setCurrentTask(doc.data());
-        }
-      });
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -68,7 +59,7 @@ export default function DialogModal({ taskId }: any) {
   const onAddMessage = () => {
     if (!!value) {
       messagesRef.add({
-        name: 'Царевич',
+        name: ADMIN_NAME,
         text: value,
         profilePicUrl: ADMIN_AVATAR,
         createdAt: new Date(),
@@ -90,9 +81,6 @@ export default function DialogModal({ taskId }: any) {
   };
   return (
     <div>
-      <Button color="secondary" onClick={handleClickOpen}>
-        Открыть диалог
-      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -104,8 +92,43 @@ export default function DialogModal({ taskId }: any) {
         <DialogContent>
           <div className={`admin__table__content--task admin__${currentTask.status}`}>
             <h2>Задание №{currentTask.number}</h2>
-            <p>Ссылка на гитхаб: {currentTask.reference || 'отсутствует'}</p>
-            <p>Описание к заданию: {currentTask.decision || 'отсутствует'}</p>
+            <div className="admin__table__content--messages--info">
+              <p className="admin__decision-link">
+                <b>Ссылка на pull-реквест: </b>
+                <a href={currentTask.reference} rel="noopener noreferrer" target="_blank">
+                  {currentTask.reference}
+                </a>
+              </p>
+              <div className="admin__decision">
+                <b>Закреплённые комментарии:</b>
+                {!!currentTask.decision &&
+                  currentTask.decision.map((item: any) => {
+                    return (
+                      <div>
+                        <div className="admin__message__user">
+                          <div className="admin__message__user--info">
+                            <Avatar
+                              className="admin__message__avatar"
+                              alt="user avatar"
+                              src={item.avatar || undefined}
+                            />
+                            <div className="admin__message__title">
+                              <span className="admin__message__name">{item.name}</span>
+                              <span className="admin__message__info">
+                                Отправлено{' '}
+                                {format(item.createdAt.toDate(), 'dd.MM.yyyy, в HH.mm.ss')}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="admin__message__item-text">
+                          <ReactMarkdown source={item.text} />
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
           </div>
           {!!messagesTask.length &&
             messagesTask.map((message: any) => (

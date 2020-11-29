@@ -31,7 +31,6 @@ const AdminLesson = () => {
   const onGetCurrentLesson = (id: string) => {
     const item = lesson.find((el: any) => el.number === id);
 
-    console.log(item);
     setLessonNumber(item.number);
     setLessonVideoPath(item.videoPath);
     setLessonText(item.text);

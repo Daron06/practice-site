@@ -13,6 +13,7 @@ export interface ITask {
   newTask: boolean;
   description?: string;
   reference?: string;
+  uid: string;
 }
 
 

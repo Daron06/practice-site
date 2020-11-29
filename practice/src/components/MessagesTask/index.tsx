@@ -131,15 +131,38 @@ const MessagesTask: React.FC<MessagesTaskProps> = ({ userId }): React.ReactEleme
           <div className="messages-task__description">
             {task && task.reference && (
               <p className="messages-task__description-link">
-                <b>Ссылка на pull-реквест:</b> <a href={task.reference} target="_blank">{task.reference}</a>
+                <b>Ссылка на pull-реквест:</b>{' '}
+                <a href={task.reference} rel="noopener noreferrer" target="_blank">
+                  {task.reference}
+                </a>
               </p>
             )}
             <div>
-              <p><b>Комментарий автора:</b></p>
+              <p>
+                <b>Закреплённые комментарии:</b>
+              </p>
               <div className="messages-task__description-text">
-                {(task && <span className="">{task.decision}</span>) || (
-                  <span>Без комментариев</span>
-                )}
+                {(task &&
+                  task.decision.map((item: any) => {
+                    return (
+                      <div key={item.name} className="messages-task__item">
+                        <div className="header__user">
+                          <div>
+                            <Avatar alt="avatar user" src={item.avatar} />
+                          </div>
+                          <div className="header__user__title">
+                            <span className="header__user__name">{item.name}</span>
+                            <span className="header__user__info">
+                              Отправлено {format(item.createdAt.toDate(), 'dd.MM.yyyy, в HH.mm.ss')}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="messages-task__item-text">
+                          <ReactMarkdown source={item.text} />
+                        </div>
+                      </div>
+                    );
+                  })) || <span>Без комментариев</span>}
               </div>
             </div>
           </div>
@@ -160,7 +183,6 @@ const MessagesTask: React.FC<MessagesTaskProps> = ({ userId }): React.ReactEleme
                       <span className="header__user__info">
                         Отправлено {format(item.createdAt, 'dd.MM.yyyy, в HH.mm.ss')}
                       </span>
-                      {/* <Button onClick={}>delete message</Button> */}
                     </div>
                   </div>
                   <div className="messages-task__item-text">

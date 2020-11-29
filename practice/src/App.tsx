@@ -31,7 +31,6 @@ function App() {
     firebase.auth().onAuthStateChanged(function (profile) {
       if (profile) {
         setUser(profile);
-        console.log(profile);
         const userInfo = usersRef.doc(profile.uid);
         userInfo.get().then((doc) => {
           // Если юзера нет, то добавляем его в активированные
@@ -63,7 +62,7 @@ function App() {
         history.push('/');
       }
     });
-  }, []);
+  }, [history, location.pathname]);
 
   React.useEffect(() => {
     if (isReady) {
@@ -72,7 +71,7 @@ function App() {
         history.push('/');
       }
     }
-  }, [isReady, location.pathname]);
+  }, [isReady, location.pathname, isPaid, history]);
 
   if (!isReady) {
     return (
@@ -113,7 +112,7 @@ function App() {
               </Route>
 
               <Route path="/videos/:id">
-                <VideosItem userId={user?.uid} />
+                <VideosItem user={user} />
               </Route>
 
               <Route>

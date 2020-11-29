@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const VideosItem = ({ userId }: any) => {
+const VideosItem = ({ user }: any) => {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -50,12 +50,12 @@ const VideosItem = ({ userId }: any) => {
           }
         });
     } else {
-      const video = videos.find(obj => obj.number === id);
+      const video = videos.find((obj) => obj.number === id);
       if (video) {
         setLesson(video);
       }
     }
-  }, [id, videos.length]);
+  }, [id, videos]);
 
   const handleClose = () => {
     setOpen((prev) => (prev = false));
@@ -83,10 +83,18 @@ const VideosItem = ({ userId }: any) => {
       const doc = await tasksRef.add({
         number: lesson.number,
         createdAt: new Date(),
+        responseAt: new Date(),
         status: 'pending',
-        decision: value,
+        decision: [
+          {
+            text: value,
+            createdAt: new Date(),
+            avatar: user.providerData[0]?.photoURL,
+            name: user.providerData[0]?.displayName || user.providerData[0]?.email || user.uid,
+          },
+        ],
         reference: urlValue,
-        uid: userId,
+        uid: user.uid,
         newTask: true,
       });
 

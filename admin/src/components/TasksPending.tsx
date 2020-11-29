@@ -4,21 +4,11 @@ import { selectTasksItems } from '../redux/tasks/selectors';
 import { ITask } from '../redux/tasks/types';
 import TaskItem from './TaskItem';
 
-const TasksPending = () => {
+const TasksPending = ({ setOpen, setTaskId }: any) => {
   const [tasksPending, setTasksPending] = React.useState<ITask[]>([]);
   const tasks = useSelector(selectTasksItems);
 
   React.useEffect(() => {
-    // tasksRef.where('status', '==', 'pending').onSnapshot(function (querySnapshot: any) {
-    //   const tasks: TaskItemProps[] = [];
-    //   querySnapshot.forEach(function (doc: any) {
-    //     tasks.push({
-    //       ...doc.data(),
-    //       taskId: doc.id,
-    //     });
-    //   });
-    //   setTasksPending(tasks);
-    // });
     setTasksPending(tasks.filter((el) => el.status === 'pending'));
   }, [tasks]);
 
@@ -30,7 +20,15 @@ const TasksPending = () => {
 
       {!!tasksPending.length &&
         tasksPending.map((task: any) => {
-          return <TaskItem key={task.taskId} taskCurrentUser={task} />;
+          return (
+            <TaskItem
+              key={task.taskId}
+              tasksPending={true}
+              setTaskId={setTaskId}
+              setOpen={setOpen}
+              taskCurrentUser={task}
+            />
+          );
         })}
     </div>
   );

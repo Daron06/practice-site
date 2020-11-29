@@ -2,11 +2,9 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import AdminResources from './pages/Resources';
 import AdminLesson from './pages/Lesson';
+import News from './pages/News';
 import AdminActivities from './pages/Activities';
 import Nav from './components/Nav';
-import TransferUsers from './components/TransferUsers';
-import TasksPending from './components/TasksPending';
-import NewMessages from './components/NewMessages';
 
 import { useDispatch } from 'react-redux';
 import { tasksRef, usersRef, firebase } from './firebase';
@@ -17,6 +15,7 @@ import { IUser } from './redux/users/types';
 import { Auth } from './auth';
 
 export const ADMIN_ID: string = '12086860';
+export const ADMIN_NAME: string = 'Царевич';
 export const ADMIN_AVATAR: string = 'https://avatars3.githubusercontent.com/u/12086860?v=4';
 
 export default function App() {
@@ -25,10 +24,7 @@ export default function App() {
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(function (profile) {
-      console.log(1);
       if (profile) {
-        console.log(2);
-
         usersRef
           .doc(profile.uid)
           .get()
@@ -52,6 +48,7 @@ export default function App() {
           newTask: doc.data().newTask,
           description: doc.data()?.description,
           reference: doc.data()?.reference,
+          uid: doc.data().uid,
         });
       });
       dispatch(setTasks(items));
@@ -102,11 +99,7 @@ export default function App() {
         <AdminActivities />
       </Route>
       <Route exact path="/">
-        <TransferUsers />
-        <div className="admin__table__content">
-          <TasksPending />
-          <NewMessages />
-        </div>
+        <News />
       </Route>
     </div>
   );
