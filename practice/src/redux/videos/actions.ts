@@ -1,4 +1,4 @@
-import { Action } from "redux";
+import {Action} from 'redux';
 import { VideosState } from "./reducer";
 
 export interface VideoItem {
