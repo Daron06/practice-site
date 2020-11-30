@@ -15,7 +15,7 @@ import { IUser } from './redux/users/types';
 import { Auth } from './auth';
 
 export const ADMIN_ID: string = '12086860';
-export const ADMIN_NAME: string = 'Царевич';
+export const ADMIN_NAME: string = 'Арчаков Дэннис';
 export const ADMIN_AVATAR: string = 'https://avatars3.githubusercontent.com/u/12086860?v=4';
 
 export default function App() {
@@ -78,16 +78,17 @@ export default function App() {
   };
 
   // if (!admin) {
-  //   return (
-  //     <div className="signin__item">
-  //       <h1>Вход в кабинет</h1>
-  //       <button onClick={handleSignInClick}>Войти через GitHub</button>
-  //     </div>
-  //   );
+    // return (
+      
+    // );
   // }
 
   return (
     <div className="App">
+      <div className="signin__item">
+        <h1>Вход в кабинет</h1>
+        <button onClick={handleSignInClick}>Войти через GitHub</button>
+      </div>
       <Nav />
       <Route exact path="/lesson">
         <AdminLesson />
