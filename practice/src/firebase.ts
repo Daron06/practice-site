@@ -15,7 +15,7 @@ const db = firebase.firestore();
 const usersRef = db.collection('users');
 const tasksRef = db.collection('tasks');
 const messagesRef = db.collection('messages');
-const lessonRef = db.collection("lesson");
+const lessonsRef = db.collection("lessons");
 const resourcesRef = db.collection("resources");
 
-export { lessonRef, tasksRef, firebase, usersRef, resourcesRef, messagesRef };
+export { lessonsRef, tasksRef, firebase, usersRef, resourcesRef, messagesRef };

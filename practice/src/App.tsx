@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { firebase, usersRef, lessonRef } from './firebase';
+import { firebase, usersRef, lessonsRef } from './firebase';
 
 import SignIn from './pages/SignIn';
 import MessagesTask from './components/MessagesTask';
@@ -16,21 +16,14 @@ import { Auth } from './auth';
 function App() {
   const history = useHistory();
   const location = useLocation();
-  const [user, setUser] = React.useState<firebase.User>();
+  const [user, setUser] = React.useState<any>();
   const [isPaid, setIsPaid] = React.useState<boolean>(false);
   const [isReady, setIsReady] = React.useState(false);
-  const [lessonLength, setLessonLength] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    lessonRef.get().then((doc: any) => {
-      setLessonLength(doc.docs.length);
-    });
-  }, []);
+  const [lessonsLength, setLessonsLength] = React.useState<number>(0);
 
   React.useEffect(() => {
     firebase.auth().onAuthStateChanged(function (profile) {
       if (profile) {
-        setUser(profile);
         const userInfo = usersRef.doc(profile.uid);
         userInfo.get().then((doc) => {
           // Если юзера нет, то добавляем его в активированные
@@ -41,13 +34,20 @@ function App() {
               photoURL: profile.providerData[0]?.photoURL,
               email: profile.providerData[0]?.email,
               accepted: false,
-              learningFlow: 1,
+              createdAt: new Date(),
             });
           }
 
           // Если юзер оплачен, то перекидываем его в /activities
           if (doc.data()?.accepted) {
             setIsPaid(true);
+            setUser(doc.data());
+            lessonsRef
+              .where('learningFlow', '==', doc?.data()?.learningFlow)
+              .get()
+              .then((doc: any) => {
+                setLessonsLength(doc.docs.length);
+              });
             if (location.pathname === '/') {
               history.push('/activities');
             }
@@ -92,7 +92,7 @@ function App() {
           <Layout user={user}>
             <Switch>
               <Route exact path="/activities">
-                {user && <Activities userId={user?.uid} lessonLength={lessonLength} />}
+                {user && <Activities userId={user?.uid} lessonsLength={lessonsLength} />}
               </Route>
 
               <Route exact path="/resources">
@@ -100,7 +100,7 @@ function App() {
               </Route>
 
               <Route exact path="/videos">
-                <Videos />
+                <Videos userLearningFlow={user.learningFlow} />
               </Route>
 
               <Route path="/activities/:id">

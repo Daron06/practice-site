@@ -10,7 +10,7 @@ import { ITask } from '../../redux/tasks/types';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 
-const AdminActivities = () => {
+const Activities = () => {
   const [userTasks, setUserTasks] = React.useState<ITask[]>([]);
   const [userMessages, setUserMessages] = React.useState<any[]>([]);
   const [currentTaskInfo, setCurrentTaskInfo] = React.useState<any>();
@@ -181,4 +181,4 @@ const AdminActivities = () => {
   );
 };
 
-export default AdminActivities;
+export default Activities;

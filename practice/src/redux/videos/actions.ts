@@ -9,6 +9,7 @@ export interface VideoItem {
 export interface Video {
   videoPath: string;
   number: string;
+  lessonId: string;
 }
 
 export enum VideosActionsType {

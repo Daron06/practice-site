@@ -7,7 +7,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const AdminResources = () => {
+const Resources = () => {
   const [resources, setResources] = React.useState<any>([]);
   const [deleteCollection, setDeleteCollection] = React.useState<string>('');
   const [resourcesTitle, setResourcesTitle] = React.useState<any>([]);
@@ -396,4 +396,4 @@ const AdminResources = () => {
   );
 };
 
-export default AdminResources;
+export default Resources;

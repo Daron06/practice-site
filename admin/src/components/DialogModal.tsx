@@ -38,7 +38,7 @@ export default function DialogModal({ taskId, open, setOpen }: any) {
           }
         });
     }
-  }, [open]);
+  }, [open, taskId]);
 
   const handleClose = () => {
     setOpen(false);

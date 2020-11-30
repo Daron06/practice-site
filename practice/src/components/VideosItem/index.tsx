@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import { lessonRef, tasksRef } from '../../firebase';
+import { lessonsRef, tasksRef } from '../../firebase';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button, InputBase, Modal, CircularProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -37,22 +37,20 @@ const VideosItem = ({ user }: any) => {
   const { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
-    console.log(id, 1);
     if (!videos.length) {
-      lessonRef
+      lessonsRef
         .doc(id)
         .get()
         .then((doc) => {
           if (doc.exists) {
             const data = doc.data();
-            console.log(data, 2);
             if (data) {
               setLesson(data);
             }
           }
         });
     } else {
-      const video = videos.find((obj) => obj.number === id);
+      const video = videos.find((obj) => obj.lessonId === id);
       if (video) {
         setLesson(video);
       }
@@ -90,6 +88,7 @@ const VideosItem = ({ user }: any) => {
     if (lesson) {
       const doc = await tasksRef.add({
         number: lesson.number,
+        learningFlow: user.learningFlow,
         createdAt: new Date(),
         responseAt: new Date(),
         status: 'pending',
@@ -97,8 +96,8 @@ const VideosItem = ({ user }: any) => {
           {
             text: value,
             createdAt: new Date(),
-            avatar: user.providerData[0]?.photoURL,
-            name: user.providerData[0]?.displayName || user.providerData[0]?.email || user.uid,
+            avatar: user?.photoURL,
+            name: user?.displayName || user?.email || user.uid,
           },
         ],
         reference: urlValue,
@@ -126,8 +125,6 @@ const VideosItem = ({ user }: any) => {
   if (!lesson) {
     return <CircularProgress />;
   }
-
-  console.log(lesson);
 
   const videoId = lesson.videoPath.split('v=')[1];
 

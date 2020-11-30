@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import AdminResources from './pages/Resources';
-import AdminLesson from './pages/Lesson';
+import Resources from './pages/Resources';
+import Lessons from './pages/Lessons';
 import News from './pages/News';
-import AdminActivities from './pages/Activities';
+import Activities from './pages/Activities';
 import Nav from './components/Nav';
 
 import { useDispatch } from 'react-redux';
@@ -77,27 +77,26 @@ export default function App() {
     Auth.signIn();
   };
 
-  // if (!admin) {
-    // return (
-      
-    // );
-  // }
-
-  return (
-    <div className="App">
+  if (!admin) {
+    return (
       <div className="signin__item">
         <h1>Вход в кабинет</h1>
         <button onClick={handleSignInClick}>Войти через GitHub</button>
       </div>
+    );
+  }
+
+  return (
+    <div className="App">
       <Nav />
       <Route exact path="/lesson">
-        <AdminLesson />
+        <Lessons />
       </Route>
       <Route exact path="/resources">
-        <AdminResources />
+        <Resources />
       </Route>
       <Route exact path="/users">
-        <AdminActivities />
+        <Activities />
       </Route>
       <Route exact path="/">
         <News />

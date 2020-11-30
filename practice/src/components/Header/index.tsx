@@ -6,10 +6,9 @@ import Avatar from '@material-ui/core/Avatar';
 import { Auth } from '../../auth';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
-import { lessonRef } from '../../firebase';
+import { lessonsRef } from '../../firebase';
 import { selectTasksItems } from '../../redux/activities/selectors';
 import { Title } from './Title';
-
 
 interface HeaderProps {
   userInfo: firebase.UserInfo | null | undefined;
@@ -18,16 +17,14 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = React.memo(({ userInfo }) => {
   const [lessonLength, setLessonLength] = React.useState<number>(0);
 
-
   const tasks = useSelector(selectTasksItems);
 
   const calcInterest = Math.round(
     (tasks.filter((el: any) => el.status === 'completed').length / lessonLength) * 100
   );
 
-
   React.useEffect(() => {
-    lessonRef.get().then((doc) => {
+    lessonsRef.get().then((doc) => {
       return setLessonLength(doc.docs.length);
     });
   }, []);

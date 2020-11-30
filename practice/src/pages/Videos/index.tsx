@@ -1,37 +1,43 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { lessonRef } from '../../firebase';
+import { lessonsRef } from '../../firebase';
 import { setVideosItems } from '../../redux/videos/actions';
 import { selectVideosItems } from '../../redux/videos/selectors';
-const Videos = () => {
+const Videos = ({ userLearningFlow }: any) => {
   const dispatch = useDispatch();
   const videos = useSelector(selectVideosItems);
 
   React.useEffect(() => {
     if (!videos.length) {
-      lessonRef.get().then((querySnapshot: any) => {
-        dispatch(
-          setVideosItems(
-            querySnapshot.docs.map((doc: { id: string; data: () => any }) => {
-              return {
-                videoPath: doc.data().videoPath,
-                number: doc.data().number,
-                text: doc.data().text,
-              };
-            })
-          )
-        );
-      });
+      lessonsRef
+        .where('learningFlow', '==', userLearningFlow)
+        .orderBy('number', 'asc')
+        .get()
+        .then((querySnapshot: any) => {
+          dispatch(
+            setVideosItems(
+              querySnapshot.docs.map((doc: { id: string; data: () => any }) => {
+                return {
+                  videoPath: doc.data().videoPath,
+                  number: doc.data().number,
+                  text: doc.data().text,
+                  createdAt: doc.data().text,
+                  lessonId: doc.id,
+                };
+              })
+            )
+          );
+        });
     }
-  }, [videos, dispatch]);
+  }, [videos, dispatch, userLearningFlow]);
 
   return (
     <div className="videos">
       {videos &&
-        videos.map(({ number, videoPath }) => (
-          <div key={number} className="videos-wrapper">
-            <Link to={`/videos/${number}`}>
+        videos.map(({ number, videoPath, lessonId }) => (
+          <div key={lessonId} className="videos-wrapper">
+            <Link to={`/videos/${lessonId}`}>
               <div className="item-wrapper">
                 <div className="videos__item">
                   <h2>Урок №{number}</h2>

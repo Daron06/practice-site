@@ -11,7 +11,7 @@ import { tasksRef } from '../../firebase';
 import EmptyTasksSvg from '../../assets/img/empty-tasks.svg';
 import { selectTasksItems } from '../../redux/activities/selectors';
 
-const Activities = ({ userId, lessonLength }: any) => {
+const Activities = ({ userId, lessonsLength }: any) => {
   const dispatch = useDispatch();
   const tasks = useSelector(selectTasksItems);
 
@@ -88,7 +88,7 @@ const Activities = ({ userId, lessonLength }: any) => {
           <h2>Выполнено заданий</h2>
           {tasks && (
             <span>
-              {tasks.filter((el: any) => el.status === 'completed').length}/{lessonLength}
+              {tasks.filter((el: any) => el.status === 'completed').length}/{lessonsLength}
             </span>
           )}
         </div>
