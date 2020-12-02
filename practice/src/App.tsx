@@ -33,8 +33,10 @@ function App() {
               displayName: profile.providerData[0]?.displayName,
               photoURL: profile.providerData[0]?.photoURL,
               email: profile.providerData[0]?.email,
-              accepted: false,
               createdAt: new Date(),
+              accepted: false,
+              learningFlow: false,
+              admin: false,
             });
           }
 

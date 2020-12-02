@@ -8,9 +8,11 @@ export interface IUser {
   accepted: boolean;
   displayName?: string;
   email?: string;
-  learningFlow: number;
+  learningFlow: string | false;
   photoURL?: string;
   uid: string;
+  admin?: true | undefined;
+  createdAt: Date;
 }
 
 export interface IUsersState {

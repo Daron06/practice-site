@@ -17,6 +17,7 @@ import { Auth } from './auth';
 export const ADMIN_ID: string = '12086860';
 export const ADMIN_NAME: string = 'Арчаков Дэннис';
 export const ADMIN_AVATAR: string = 'https://avatars3.githubusercontent.com/u/12086860?v=4';
+export const LEARNING_FLOW: string = '1';
 
 export default function App() {
   const [admin, setAdmin] = React.useState(false);
@@ -67,6 +68,8 @@ export default function App() {
           learningFlow: doc.data().learningFlow,
           photoURL: doc.data()?.photoURL,
           uid: doc.data().uid,
+          admin: doc.data()?.admin,
+          createdAt: doc.data().createdAt.toDate(),
         });
       });
       dispatch(setUsers(user));

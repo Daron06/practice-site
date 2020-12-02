@@ -15,7 +15,15 @@ const Activities = () => {
   const [userMessages, setUserMessages] = React.useState<any[]>([]);
   const [currentTaskInfo, setCurrentTaskInfo] = React.useState<any>();
   const [value, setValue] = React.useState<string>('');
+  const [learningFlowFilter, setLearningFlowFilter] = React.useState<any>([]);
+  const [currentLearningFlow, setCurrentLearningFlow] = React.useState<string | boolean>(true);
+
   const users = useSelector(selectUsersItems);
+  React.useEffect(() => {
+    const learningFlow: any = [];
+    users.forEach((el: any) => el.learningFlow && learningFlow.push(el.learningFlow));
+    setLearningFlowFilter(Array.from(new Set(learningFlow)));
+  }, [users]);
 
   const onGetUserTasks = (id: any) => {
     setUserMessages([]);
@@ -51,6 +59,14 @@ const Activities = () => {
     setValue('');
   };
 
+  const onAllLearningFlow = () => {
+    setCurrentLearningFlow(true);
+  };
+
+  const onCurrentLearningFlow = (item: string) => {
+    setCurrentLearningFlow(item);
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
@@ -63,10 +79,36 @@ const Activities = () => {
 
   return (
     <div>
+      <div className="lessons__header">
+        <ul>
+          <li>
+            <Button onClick={onAllLearningFlow} color="primary" variant="outlined">
+              Все потоки
+            </Button>
+          </li>
+          {learningFlowFilter.sort().map((item: string) => {
+            return (
+              <li key={item}>
+                <Button
+                  onClick={() => onCurrentLearningFlow(item)}
+                  color="secondary"
+                  variant="outlined"
+                >
+                  Поток №{item}
+                </Button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
       <div className="admin__table">
         <div className="admin__table__header">
           {users
-            .filter((user) => user.accepted)
+            .filter((user) =>
+              currentLearningFlow === true
+                ? user.accepted
+                : user.accepted && user.learningFlow === currentLearningFlow
+            )
             .map((user) => {
               return (
                 <div className="admin__table__header--item" key={user.uid}>

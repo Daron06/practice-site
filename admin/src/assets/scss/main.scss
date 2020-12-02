@@ -16,6 +16,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
+
+  .MuiButton-root {
+    text-transform: none;
+  }
 }
 h1,
 h2,
@@ -28,8 +32,29 @@ h6 {
 pre {
   font-family: inherit;
 }
+img {
+  width: 100%;
+}
 .app {
   display: flex;
+}
+
+.users__config {
+  margin: 20px;
+  width: 100%;
+
+  border: 1px solid green;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.admin__users__list__item {
+  .MuiTouchRipple-root {
+    pointer-events: inherit;
+  }
+  .MuiButton-root {
+    border-radius: 40px;
+  }
 }
 .scrollbar {
   &::-webkit-scrollbar-button {
