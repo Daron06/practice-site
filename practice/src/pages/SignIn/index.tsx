@@ -16,7 +16,7 @@ const SignIn: React.FC<SignInProps> = ({ userId, isPaid }): React.ReactElement =
   };
 
   let content;
-
+  console.log(userId);
   React.useEffect(() => {
     if (userId) {
     }
