@@ -25,6 +25,7 @@ function App() {
     firebase.auth().onAuthStateChanged(function (profile) {
       if (profile) {
         const userInfo = usersRef.doc(profile.uid);
+
         userInfo.get().then((doc) => {
           // Если юзера нет, то добавляем его в активированные
           if (!doc.exists) {
@@ -39,7 +40,7 @@ function App() {
               admin: false,
             });
           }
-
+          setUser(doc.data());
           // Если юзер оплачен, то перекидываем его в /activities
           if (doc.data()?.accepted) {
             setIsPaid(true);
@@ -78,7 +79,7 @@ function App() {
   if (!isReady) {
     return (
       <div className="content__center">
-        <CircularProgress size={60} thickness={6} />
+        <CircularProgress variant="indeterminate" size={60} thickness={6} />
       </div>
     );
   }
@@ -102,7 +103,7 @@ function App() {
               </Route>
 
               <Route exact path="/videos">
-                <Videos userLearningFlow={user.learningFlow} />
+                <Videos userLearningFlow={user?.learningFlow} />
               </Route>
 
               <Route path="/activities/:id">
